@@ -1,6 +1,7 @@
 # MetodosNumericos
 Implementação em C++ de métodos numéricos
 
+`` 
 projeto-sismico/
 ├── bin/                   # Onde ficará o executável compilado
 ├── obj/                   # Arquivos objetos (.o) intermediários
@@ -18,3 +19,4 @@ projeto-sismico/
 │   └── main.cpp           # Loop principal, leitura de inputs e chamadas
 ├── Makefile               # Script para compilar tudo automaticamente
 └── README.md              # Documentação do projeto
+`` 
