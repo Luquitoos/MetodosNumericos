@@ -11,11 +11,11 @@ using namespace std;
 void newton_raphson_method(vector<double>* values_d, double a, double d, int max, const double tolerance) {
     values_d->push_back(d);
     double val = values_d->back();
-    values_d->push_back(val - function_value(a, val)/derivate_function(a,val));
+    values_d->push_back(val - function_value(a, val)/derivate(a,val));
     int i = 0;
     while ((max>i)&&(abs(values_d->back() - (*values_d)[values_d->size()- 2]) >= tolerance )) {
         val = values_d->back();
-        values_d->push_back(val - function_value(a, val)/derivate_function(a,val));
+        values_d->push_back(val - function_value(a, val)/derivate(a,val));
         i++;
     }
     if (i >= max) {
