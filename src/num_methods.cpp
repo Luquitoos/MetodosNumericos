@@ -1,6 +1,7 @@
 #include <iostream> 
 #include <vector>
-#include "math_utils.cpp"
+#include "../include/num_methods.h"
+#include "../include/math_utils.h"
 #include <cmath>
 using namespace std;
 
@@ -8,20 +9,26 @@ using namespace std;
 //a = 1
 //d = 0.5
 
-//the tolerance is the error we can tolerate, in this case, 0.0001 or 10^-4
-//the max variabel is interactions limit. I put it in the code because if the aproximation never arrive at the tolerance, we would have a infinite loop, this is just precaution
+// o valor do topo do vetor é o valor final calculado pelo método
 void newton_raphson_method(vector<double>* values_d, double a, double d, int max, const double tolerance) {
     values_d->push_back(d);
     double val = values_d->back();
-    values_d->push_back(val - function_value(a, val)/derivate(a,val));
-    int i = 0;
+    double derivative = derivate(a,val);
+    if (first_derivative == 0) {
+        cerr << "a derivada da função retornou um valor nulo";
+    values_d->push_back(val - function_value(a, val)/derivative);
+    int i = 1; // o contador começa em 1 pq eu já gastei poder computacional na linha 15
     while ((max>i)&&(abs(values_d->back() - (*values_d)[values_d->size()- 2]) >= tolerance )) {
         val = values_d->back();
-        values_d->push_back(val - function_value(a, val)/derivate(a,val));
+        derivative = derivate(a,val);
+        if (derivative == 0) {
+            cerr << "A derivada da função retornou um valor nulo";
+            break;
+        values_d->push_back(val - function_value(a, val)/derivative);
         i++;
     }
     if (i >= max) {
-        cout << "The result doesn't converge with that interation limit\n";
+        cerr << "The result doesn't converge with that interation limit\n";
     }
 }
 
@@ -30,6 +37,9 @@ void newton_modified_method(vector<double>* values_d, double a, double d, int ma
     values_d->push_back(d);
     double val = values_d->back();
     double static_derivative = derivate(a,val);
+    if (static_derivate == 0) {
+        cerr << "A derivada dessa função é igual a 0";
+    }
     values_d->push_back(val - function_value(a, val)/static_derivative);
     int i = 0;
     while ((max>i)&&(abs(values_d->back() - (*values_d)[values_d->size()- 2]) >= tolerance )) {
@@ -38,21 +48,54 @@ void newton_modified_method(vector<double>* values_d, double a, double d, int ma
         i++;
     }
     if (i >= max) {
-        cout << "The result doesn't converge with that interation limit\n";
+        cerr << "The result doesn't converge with that interation limit\n";
     }
 }
 
+void secant_method(vector<double>& values_d, double a, double d1, double d2, int max_iter, const double tolerance) {
+    
+    values_d.clear();
+    
+    double f1 = function_value(a, d1);
+    double f2 = function_value(a, d2);
 
-
-void secant_method(vector<double>* values_d, double a, double d1, double d2, int max, const double tolerance) {
-    values_d->push_back(d1);
-    values_d->push_back(d2);
-    int i = 0;
-    while ((i < max)&& (abs(values_d->back()-(*values_d)[values_d->size()-2]) >= tolerance)) {
-        d1 = (*values_d)[values_d->size()-2];//penultimo
-        d2 = values_d->back();//ultimo
-        values_d->push_back(d2-((function_value(a, d2)*(d2-d1))/(function_value(a, d2)-function_value(a, d1))));
-        i++;
+    if (abs(f1) < tolerance) {
+        values_d.push_back(d1);
+        return; 
     }
-}
 
+    values_d.push_back(d1);
+    values_d.push_back(d2);
+
+    if (abs(f2) < tolerance) {
+        return;
+    }
+
+    for (int i = 0; i < max_iter; i++) {
+        
+        if (abs(f2 - f1) < 1e-14) {
+            cerr << "Erro devido a divisão por zero (f1 ~= f2) na iteração " << i << ".\n";
+            return; 
+        }
+
+        double next = d2 - f2 * ((d2 - d1) / (f2 - f1));
+        
+        values_d.push_back(next);
+
+        if (abs(next - d2) < tolerance) {
+            return;
+        }
+        
+        d1 = d2;
+        f1 = f2; 
+        
+        d2 = next;
+        f2 = function_value(a, d2); 
+        
+        if (abs(f2) < tolerance) {
+            return;
+        }
+    }
+    
+    cerr << "Convergência não alcançada após " << max_iter << " iterações.\n";
+}
