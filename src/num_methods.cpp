@@ -31,14 +31,30 @@ double newton_modified_method(double a, double d) {
 
 */
 
-void secant_method(vector<double>* values_d, double a, double d1, double d2, int max, const double tolerance) {
+void secant_method(std::vector<double>* values_d,
+                   double a, double d1, double d2,
+                   int max_iter, const double tolerance)
+{
+    values_d->clear();
     values_d->push_back(d1);
     values_d->push_back(d2);
-    int i = 0;
-    while ((i < max)&& (abs(values_d->back()-(*values_d)[values_d->size()-2]) >= tolerance)) {
-        d1 = (*values_d)[values_d->size()-2];//penultimo
-        d2 = values_d->back();//ultimo
-        values_d->push_back(d2-((function_value(a, d2)*(d2-d1))/(function_value(a, d2)-function_value(a, d1))));
-        i++;
+
+    for (int i = 0; i < max_iter; i++) {
+        double f1 = function_value(a, d1);
+        double f2 = function_value(a, d2);
+
+        if (std::abs(f2 - f1) < 1e-14) {
+            std::cerr << "Erro: divisão por zero iminente no método da secante.\n";
+            return;
+        }
+
+        double next = (d1*f2 - d2*f1) / (f2 - f1);
+        values_d->push_back(next);
+
+        if (std::abs(next - d2) < tolerance)
+            return;
+
+        d1 = d2;
+        d2 = next;
     }
 }
