@@ -8,6 +8,8 @@ using namespace std;
 //a = 1
 //d = 0.5
 
+//the tolerance is the error we can tolerate, is this case, 0.0001 or 10^-4
+//the max variavel is the limit of interactions. I put it in the code because if the aproximation never arrive at the tolerance, we would have a infinite loop, this is just precaution
 void newton_raphson_method(vector<double>* values_d, double a, double d, int max, const double tolerance) {
     values_d->push_back(d);
     double val = values_d->back();
@@ -23,12 +25,24 @@ void newton_raphson_method(vector<double>* values_d, double a, double d, int max
     }
 }
 
-/*
-double newton_modified_method(double a, double d) {
-
+// the difference between newton-raphson and newton modified is just the derivate, the cost of this algorithm is shorter 'cause derivate only one time
+void newton_modified_method(vector<double>* values_d, double a, double d, int max, const double tolerance) {
+    values_d->push_back(d);
+    double val = values_d->back();
+    double static_derivative = derivate(a,val);
+    values_d->push_back(val - function_value(a, val)/static_derivative);
+    int i = 0;
+    while ((max>i)&&(abs(values_d->back() - (*values_d)[values_d->size()- 2]) >= tolerance )) {
+        val = values_d->back();
+        values_d->push_back(val - function_value(a, val)/static_derivative);
+        i++;
+    }
+    if (i >= max) {
+        cout << "The result doesn't converge with that interation limit\n";
+    }
 }
 
-*/
+
 
 void secant_method(vector<double>* values_d, double a, double d1, double d2, int max, const double tolerance) {
     values_d->push_back(d1);
