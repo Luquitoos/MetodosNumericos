@@ -10,32 +10,12 @@ double function_value(double a, double d) {
     return ((a * exp(d)) - (4 * pow(d, 2)));
 }
 
-// derivada que funciona pra qualquer função, porém, gasta mais poder computacional
-double derivate(double a, double d) {
-    int cont = 0;
-    double h = 0.1;
-    double val_d1 = (function_value(a, d+h)-function_value(a,d-h))/(2*h);
+double derivate(double a, double x) {
+    // 6.0e-6 é um bom valor por esta alinhado com o "machine epsilon", vai reduzir problemas de truncamento
+    double h = 6.0e-6 * std::fmax(std::abs(x), 1.0);
 
-    h /= 10;
-    double val_d2 = (function_value(a, d+h)-function_value(a,d-h))/(2*h);
-    
-    if (abs(val_d1 - val_d2) < 0.0001) {
-        return val_d2;
-    }
+    double f_soma = function_value(a, x + h);
+    double f_sub = function_value(a, x - h);
 
-    while (abs(val_d1 - val_d2) >= 0.0001) {
-         h /= 10.0;
-
-        val_d1 = val_d2;
-        val_d2 = (function_value(a, d+h)-function_value(a,d-h))/(2*h);
-
-    }
-    cout << cont;
-    return val_d2;
-}
-
-// derivada aproximada, 
-double aproximated_derivative(double a, double d) {
-    double h = 0.000001;
-    return ((function_value(a, d+h)- function_value(a, d-h))/(2*h));
+    return (f_soma - f_sub) / (2.0 * h);
 }
