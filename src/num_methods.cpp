@@ -8,8 +8,8 @@ using namespace std;
 //a = 1
 //d = 0.5
 
-//the tolerance is the error we can tolerate, is this case, 0.0001 or 10^-4
-//the max variavel is the limit of interactions. I put it in the code because if the aproximation never arrive at the tolerance, we would have a infinite loop, this is just precaution
+//the tolerance is the error we can tolerate, in this case, 0.0001 or 10^-4
+//the max variabel is interactions limit. I put it in the code because if the aproximation never arrive at the tolerance, we would have a infinite loop, this is just precaution
 void newton_raphson_method(vector<double>* values_d, double a, double d, int max, const double tolerance) {
     values_d->push_back(d);
     double val = values_d->back();
