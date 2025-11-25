@@ -5,7 +5,7 @@
 #include <cmath>
 using namespace std;
 
-// function: f(d) = a*e^d -4d^2
+// função: f(d) = a*e^d -4d^2
 //a = 1
 //d = 0.5
 
@@ -20,37 +20,42 @@ void newton_raphson_method(vector<double>* values_d, double a, double d, int max
         i++;
     }
     if (i >= max) {
-        cout << "The result doesn't converge with that interation limit\n";
+        cout << "O resultado não converge com esse limite de iteração.\n";
     }
 }
 
 /*
-double newton_modified_method(double a, double d) {
+void newton_modified_method(std::vector<double>* values_d, double a, double d, int max, const double tolerance); {
 
 }
 
 */
 
-void secant_method(std::vector<double>& values_d, double a, double d1, double d2, int max_iter, const double tolerance) {
+void secant_method(std::vector<double>* values_d, double a, double d1, double d2, int max, const double tolerance) {
     
-    values_d.clear();
+    if (values_d == nullptr) {
+        std::cerr << "Erro: Ponteiro para vetor nulo.\n";
+        return;
+    }
+
+    values_d->clear();
     
     double f1 = function_value(a, d1);
     double f2 = function_value(a, d2);
 
     if (std::abs(f1) < tolerance) {
-        values_d.push_back(d1);
+        values_d->push_back(d1);
         return; 
     }
 
-    values_d.push_back(d1);
-    values_d.push_back(d2);
+    values_d->push_back(d1);
+    values_d->push_back(d2);
 
     if (std::abs(f2) < tolerance) {
         return;
     }
 
-    for (int i = 0; i < max_iter; i++) {
+    for (int i = 0; i < max; i++) {
         
         if (std::abs(f2 - f1) < 1e-14) {
             std::cerr << "Erro devido a divisão por zero (f1 ~= f2) na iteração " << i << ".\n";
@@ -59,7 +64,7 @@ void secant_method(std::vector<double>& values_d, double a, double d1, double d2
 
         double next = d2 - f2 * ((d2 - d1) / (f2 - f1));
         
-        values_d.push_back(next);
+        values_d->push_back(next);
 
         if (std::abs(next - d2) < tolerance) {
             return;
@@ -76,5 +81,5 @@ void secant_method(std::vector<double>& values_d, double a, double d1, double d2
         }
     }
     
-    std::cerr << "Convergência não alcançada após " << max_iter << " iterações.\n";
+    std::cerr << "Convergência não alcançada após " << max << " iterações.\n";
 }

@@ -5,30 +5,28 @@
 #include <string>
 
 struct MethodResult {
-    // Nome do método
+
     std::string method_name; 
     
-    // O valor final de 'd' encontrado (raiz)
-    double final_d;          
+    double final_d; // O valor final de 'd' encontrado (raiz)
     
-    // O erro associado à última iteração
-    double final_error;      
+    double final_error; // O erro associado à última iteração
     
-    // Quantas iterações foram necessárias para chegar ao resultado
     int total_iterations;    
 };
 
-// Exibe o cabeçalho inicial do projeto
-void print_header();
+void print_header(); // Exibe o cabeçalho inicial do projeto
 
-// Exibe uma linha separadora (estética)
-void print_separator();
+void print_separator(); // Exibe uma linha separadora
 
 // Exibe a tabela passo-a-passo de um método específico
 // history: vetor contendo todos os valores de 'd' encontrados em cada iteração
 void print_iteration_table(const std::string& method_name, const std::vector<double>& history);
 
-// Exibe a tabela final comparando todos os métodos executados
-void print_comparison_table(const std::vector<MethodResult>& results);
+void print_comparison_table(const std::vector<MethodResult>& results); // Exibe a tabela final comparando todos os métodos executados
+
+MethodResult create_result(const std::string& name, const std::vector<double>& history); // Converte o histórico bruto de iterações na estrutura MethodResult usada pelas tabelas
+
+void analyze_safety(double d, double a); // Analisa e exibe se o deslocamento é seguro ou crítico (d > 0.7)
 
 #endif

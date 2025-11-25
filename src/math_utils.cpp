@@ -4,8 +4,6 @@
 #include <string>
 using namespace std;
 
-// that function calculates the derivative of f(d) = a*e^d - 4d^2 at d
-
 double function_value(double a, double d) {
     return ((a * exp(d)) - (4 * pow(d, 2)));
 }
