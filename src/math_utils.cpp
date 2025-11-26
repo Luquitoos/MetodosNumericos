@@ -9,8 +9,8 @@ double function_value(double a, double d) {
 }
 
 double derivate(double a, double x) {
-    // 6.0e-6 é um bom valor por esta alinhado com o "machine epsilon", vai reduzir problemas de truncamento
-    double h = 6.0e-6 * std::fmax(std::abs(x), 1.0);
+    // 6.0e-6 é um bom valor por estar alinhado com o "machine epsilon", vai reduzir problemas de truncamento
+    double h = 6.0e-6 * fmax(abs(x), 1.0);
 
     double f_soma = function_value(a, x + h);
     double f_sub = function_value(a, x - h);
