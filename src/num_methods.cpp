@@ -34,7 +34,7 @@ void newton_modified_method(std::vector<double>* values_d, double a, double d, i
 void secant_method(std::vector<double>* values_d, double a, double d1, double d2, int max, const double tolerance) {
     
     if (values_d == nullptr) {
-        std::cerr << "Erro: Ponteiro para vetor nulo.\n";
+        cerr << "Erro: Ponteiro para vetor nulo.\n";
         return;
     }
 
@@ -43,7 +43,7 @@ void secant_method(std::vector<double>* values_d, double a, double d1, double d2
     double f1 = function_value(a, d1);
     double f2 = function_value(a, d2);
 
-    if (std::abs(f1) < tolerance) {
+    if (abs(f1) < tolerance) {
         values_d->push_back(d1);
         return; 
     }
@@ -51,14 +51,14 @@ void secant_method(std::vector<double>* values_d, double a, double d1, double d2
     values_d->push_back(d1);
     values_d->push_back(d2);
 
-    if (std::abs(f2) < tolerance) {
+    if (abs(f2) < tolerance) {
         return;
     }
 
     for (int i = 0; i < max; i++) {
         
-        if (std::abs(f2 - f1) < 1e-14) {
-            std::cerr << "Erro devido a divisão por zero (f1 ~= f2) na iteração " << i << ".\n";
+        if (abs(f2 - f1) < 1e-14) {
+            cerr << "Erro devido a divisão por zero (f1 ~= f2) na iteração " << i << ".\n";
             return; 
         }
 
@@ -66,7 +66,7 @@ void secant_method(std::vector<double>* values_d, double a, double d1, double d2
         
         values_d->push_back(next);
 
-        if (std::abs(next - d2) < tolerance) {
+        if (abs(next - d2) < tolerance) {
             return;
         }
         
@@ -76,10 +76,10 @@ void secant_method(std::vector<double>* values_d, double a, double d1, double d2
         d2 = next;
         f2 = function_value(a, d2); 
         
-        if (std::abs(f2) < tolerance) {
+        if (abs(f2) < tolerance) {
             return;
         }
     }
     
-    std::cerr << "Convergência não alcançada após " << max << " iterações.\n";
+    cerr << "Convergência não alcançada após " << max << " iterações.\n";
 }
