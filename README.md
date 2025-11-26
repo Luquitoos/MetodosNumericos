@@ -70,16 +70,21 @@ A escolha de $h$ é um problema de otimização.
 2.  Se $h$ for muito pequeno, o **Erro de Arredondamento** (devido à precisão finita do computador) domina, causando cancelamento catastrófico.
 
 O ponto ótimo ocorre quando esses dois erros se equilibram, sendo proporcional à raiz cúbica do Epsilon da Máquina ($\epsilon_{mach}$):
+
 $$
 h_{otimo} \approx \sqrt[3]{\epsilon_{mach}} \cdot x
 $$
 
-Para variáveis de dupla precisão (`double` em C++), $\epsilon_{mach} \approx 2.2 \times 10^{-16}$. Calculando a raiz cúbica:
+Para variáveis de dupla precisão (`double` em C++), $\epsilon_{mach} \approx 2.2 \times 10^{-16}$. 
+
+Calculando a raiz cúbica:
+
 $$
 \sqrt[3]{2.2 \times 10^{-16}} \approx 6.0 \times 10^{-6}
 $$
 
 Portanto, para garantir estabilidade numérica em qualquer escala de $d$, utilizamos a fórmula:
+
 $$ 
 h = 6 \times 10^{-6} \cdot \max(|d|, 1) 
 $$
@@ -106,6 +111,7 @@ double derivate(double a, double x) {
 É um método iterativo de convergência quadrática (rápida). Ele utiliza a reta tangente ao ponto $x_k$ para estimar onde a função cruza o eixo zero.
 
 A fórmula de iteração é:
+
 $$ 
 x_{k+1} = x_k - \frac{f(x_k)}{f'(x_k)} 
 $$
@@ -142,6 +148,7 @@ void newton_raphson_method(vector<double>* values_d, double a, double d, int max
 Para evitar o custo computacional de calcular a derivada $f'(x_k)$ em toda iteração (o que pode ser custoso em funções complexas), este método calcula a derivada **apenas no ponto inicial** $x_0$ e a mantém constante.
 
 A fórmula de iteração torna-se:
+
 $$ 
 x_{k+1} = x_k - \frac{f(x_k)}{f'(x_0)} 
 $$
@@ -180,6 +187,7 @@ void newton_modified_method(vector<double>* values_d, double a, double d, int ma
 O método da Secante substitui a necessidade da derivada analítica ou numérica aproximando a tangente por uma reta secante que passa pelos dois últimos pontos calculados ($x_k$ e $x_{k-1}$).
 
 A fórmula de iteração é:
+
 $$ 
 x_{k+1} = x_k - f(x_k) \cdot \frac{x_k - x_{k-1}}{f(x_k) - f(x_{k-1})} 
 $$
