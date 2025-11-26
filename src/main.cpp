@@ -1,9 +1,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "../include/num_methods.h"
-#include "../include/ui_utils.h"
-#include "../include/math_utils.h"
+#include "num_methods.h"
+#include "ui_utils.h"
+#include "math_utils.h"
 using namespace std;
 
 const double d0 = 0.5;        // Chute inicial

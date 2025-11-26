@@ -1,7 +1,7 @@
 #include <iostream> 
 #include <vector>
-#include "../include/num_methods.h"
-#include "../include/math_utils.h"
+#include "num_methods.h"
+#include "math_utils.h"
 #include <cmath>
 using namespace std;
 
