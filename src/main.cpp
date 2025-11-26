@@ -7,35 +7,35 @@
 using namespace std;
 
 const double d0 = 0.5;        // Chute inicial
-const double d1 = 0.4;        // Segundo ponto (Secante: d0 - 0.1) Qualquer coisa a gente vai mudando
+const double d1 = 0.4;        // Segundo ponto (Secante: d0 - 0.1)
 const int max_iter = 100;     // Limite de segurança
 
 int main() {
     print_header();
 
-    std::vector<double> a_values;
+    vector<double> a_values;
     
     int n;
     double epsilon;
 
     // Inserir número de valores de a
-    std::cout << "Insira o numero de valores para 'a' (n): ";
-    std::cin >> n;
+    cout << "Insira o numero de valores para 'a' (n): ";
+    cin >> n;
 
     // Inserir a (para cada n)
-    std::cout << "Insira os " << n << " valores para a amplitude 'a':\n";
+    cout << "Insira os " << n << " valores para a amplitude 'a':\n";
     for (int i = 0; i < n; ++i) {
         double val;
         
-        std::cout << "Valor " << (i + 1) << ": ";
-        std::cin >> val;
+        cout << "Valor " << (i + 1) << ": ";
+        cin >> val;
         
         a_values.push_back(val);
     }
 
     // Inserir Precisão
-    std::cout << "Insira a precisao (epsilon): ";
-    std::cin >> epsilon;
+    cout << "Insira a precisao (epsilon): ";
+    cin >> epsilon;
 
     // Loop do Menu
     int choice; 
@@ -125,12 +125,10 @@ int main() {
                 bool risk_found = false;
                 
                 for(const auto& res : comparative_results) {
-                    
                     if(res.final_d > 0.7) {
                         cout << " -> ALERTA: " << res.method_name << " atingiu d = " << res.final_d << " (RISCO)\n";
                         risk_found = true;
                     }
-
                 }
                 
                 if (!risk_found) cout << "Nenhum risco critico detectado\n";
@@ -141,6 +139,6 @@ int main() {
 
     } while (choice != 0);
 
-    std::cout << "Sistema encerrando.\n";
+    cout << "Sistema encerrando.\n";
     return 0;
 }
