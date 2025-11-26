@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  app:
+    image: gcc:latest
+    
+    container_name: sismico_dev_env
+    
+    working_dir: /usr/src/app
+    
+    # VOLUME (O segredo do desenvolvimento):
+    # Mapeia a pasta atual do Windows (.) para dentro do container
+    volumes:
+      - .:/usr/src/app
+    
+    # Habilita modo interativo (essencial para o cin >> funcionar)
+    stdin_open: true # equvalente a -i
+    tty: true        # equivalente a -t
+    
+    # Comando padrão ao subir: Compila e Roda
+    # Se der erro no make, ele não tenta rodar o executável (&&)
+    command: /bin/bash -c "make && ./bin/sismico_solver"
