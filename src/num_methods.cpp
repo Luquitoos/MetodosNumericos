@@ -1,4 +1,5 @@
 #include <iostream> 
+#include <cstdlib>
 #include <vector>
 #include "num_methods.h"
 #include "math_utils.h"
@@ -9,17 +10,38 @@ using namespace std;
 //a = 1
 //d = 0.5
 
+bool verificate_derivative(double derivative) {
+    if (abs(derivative) <= 1e-14) {
+        cerr << "Erro: Derivada inicial muito proxima de zero.\n";
+        return false;
+    }
+    return true;
+}
+
 void newton_raphson_method(vector<double>* values_d, double a, double d, int max, const double tolerance) {
+
     values_d->push_back(d);
-    double val = values_d->back();
-    values_d->push_back(val - function_value(a, val)/derivate(a,val));
-    int i = 0;
+
+    double derivative = derivate(a,d);
+    if (verificate_derivative(derivative) == false) return;
+
+    values_d->push_back(d - function_value(a, d)/derivative);
+
+    int i = 1;
+
     while ((max>i)&&(abs(values_d->back() - (*values_d)[values_d->size()- 2]) >= tolerance )) {
-        val = values_d->back();
-        values_d->push_back(val - function_value(a, val)/derivate(a,val));
+
+        double val = values_d->back();
+        
+        derivative = derivate(a,val);
+        if (verificate_derivative(derivative) == false) return;
+
+        values_d->push_back(val - function_value(a, val)/derivative);
+
         i++;
     }
-    if (i >= max) {
+
+    if ((i >= max) && (abs(values_d->back() - (*values_d)[values_d->size()- 2]) >= tolerance)) {
         cout << "O resultado não converge com esse limite de iteração.\n";
     }
 }
@@ -32,10 +54,7 @@ void newton_modified_method(vector<double>* values_d, double a, double d, int ma
     values_d->push_back(d); 
     double deriv_const = derivate(a, d);
     
-    if (abs(deriv_const) < 1e-14) {
-        cerr << "Erro: Derivada inicial muito proxima de zero.\n";
-        return;
-    }
+    if (verificate_derivative(deriv_const) == false) return;
 
     for (int i = 0; i < max; ++i) {
         double current_val = values_d->back();
