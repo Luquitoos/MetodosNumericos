@@ -121,21 +121,25 @@ Note que a função `derivate` é chamada dentro do loop `while`, ou seja, a inc
 
 ```cpp
 void newton_raphson_method(vector<double>* values_d, double a, double d, int max, const double tolerance) {
-    values_d->push_back(d); // Histórico x0
-    
-    // Primeiro passo
-    double val = values_d->back();
-    double next_val = val - function_value(a, val) / derivate(a, val);
-    values_d->push_back(next_val);
+    values_d->push_back(d);
+    double derivative = derivate(a,d);
 
-    int i = 0;
-    // Loop continua enquanto erro > tolerancia
-    while ((max > i) && (abs(values_d->back() - (*values_d)[values_d->size()- 2]) >= tolerance )) {
-        val = values_d->back();
-        // FÓRMULA: x_new = x_old - f(x)/f'(x)
-        next_val = val - function_value(a, val) / derivate(a, val);
-        values_d->push_back(next_val);
+    if (verificate_derivative(derivative) == false) return;
+
+    values_d->push_back(d - function_value(a, d)/derivative);
+
+    int i = 1;
+    while ((max>i)&&(abs(values_d->back() - (*values_d)[values_d->size()- 2]) >= tolerance )) {
+        double val = values_d->back();
+        derivative = derivate(a,val);
+
+        if (verificate_derivative(derivative) == false) return;
+
+        values_d->push_back(val - function_value(a, val)/derivative);
         i++;
+    }
+    if ((i >= max) && (abs(values_d->back() - (*values_d)[values_d->size()- 2]) >= tolerance)) {
+        cout << "O resultado não converge com esse limite de iteração.\n";
     }
 }
 ```
