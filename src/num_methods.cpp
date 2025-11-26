@@ -24,33 +24,36 @@ void newton_raphson_method(vector<double>* values_d, double a, double d, int max
     }
 }
 
-void newton_modified_method(std::vector<double>* values_d, double a, double d, int max, const double tolerance) {
+void newton_modified_method(vector<double>* values_d, double a, double d, int max, const double tolerance) {
+    
+    if (values_d == nullptr) return;
+    
+    values_d->clear();
     values_d->push_back(d); 
     double deriv_const = derivate(a, d);
     
-    if (std::abs(deriv_const) < 1e-14) {
-        std::cerr << "Erro: Derivada inicial muito proxima de zero.\n";
+    if (abs(deriv_const) < 1e-14) {
+        cerr << "Erro: Derivada inicial muito proxima de zero.\n";
         return;
     }
 
-    int i = 0;
-    while (i < max) {
+    for (int i = 0; i < max; ++i) {
         double current_val = values_d->back();
         double f_val = function_value(a, current_val);
+        
         double next_val = current_val - (f_val / deriv_const);
         values_d->push_back(next_val);
         
-        if (std::abs(next_val - current_val) < tolerance) {
+        // Verifica convergência
+        if (abs(next_val - current_val) < tolerance) {
             return;
         }
-        
-        i++;
     }
     
-    std::cout << "Aviso: O metodo Newton Modificado nao convergiu apos " << max << " iteracoes.\n";
+    cout << "Aviso: O metodo Newton Modificado nao convergiu apos " << max << " iteracoes.\n";
 }
 
-void secant_method(std::vector<double>* values_d, double a, double d1, double d2, int max, const double tolerance) {
+void secant_method(vector<double>* values_d, double a, double d1, double d2, int max, const double tolerance) {
     
     if (values_d == nullptr) {
         cerr << "Erro: Ponteiro para vetor nulo.\n";
